@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--<context:component-scan base-package="com.leon.springinaction"/>-->
+    <aop:aspectj-autoproxy/>
+    <bean id="audience" class="com.leon.springinaction.aspect.Audience"/>
+    <bean id="performance" class="com.leon.springinaction.impl.PerformanceImpl"/>
+    <bean id="trackCpunter" class="com.leon.springinaction.aspect.TrackCounter"/>
+    <bean id="cd" class="com.leon.springinaction.impl.BlackDisk"/>
+    <bean id="encoreableDelegate" class="com.leon.springinaction.impl.DefaultEncoreable"/>
+
+    <aop:config>
+        <aop:aspect ref="audience">
+
+            <!--<aop:pointcut id="performance" expression="execution(* com.leon.springinaction.Performance.perform(..))"/>-->
+
+            <aop:before method="silenceCellPhone"
+                        pointcut="execution(* com.leon.springinaction.Performance.perform(..))"/>
+            <aop:before method="taskSeats"
+                        pointcut="execution(* com.leon.springinaction.Performance.perform(..))"/>
+            <aop:after-returning method="applaus"
+                                 pointcut="execution(* com.leon.springinaction.Performance.perform(..))"/>
+            <aop:after-throwing method="demandRefund"
+                                pointcut="execution(* com.leon.springinaction.Performance.perform(..))"/>
+
+            <!--<aop:around method="watchPerformance" pointcut-ref="performance"/>-->
+        </aop:aspect>
+
+        <aop:aspect ref="trackCpunter">
+            <aop:pointcut id="trackPlayed"
+                          expression="execution(* com.leon.springinaction.CompactDisc.playTrack(int)) and args(trackNumber)"/>
+            <aop:before method="countTrack" pointcut-ref="trackPlayed"/>
+        </aop:aspect>
+
+        <aop:aspect>
+            <aop:declare-parents types-matching="com.leon.springinaction.Performance+"
+                                 implement-interface="com.leon.springinaction.Encoreable"
+                                 delegate-ref="encoreableDelegate"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
