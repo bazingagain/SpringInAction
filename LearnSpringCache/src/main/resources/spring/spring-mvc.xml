@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <cache:advice id="cacheAdvisor" cache-manager="cacheManager">
+        <cache:caching cache="roleCache">
+            <cache:cacheable method="findOne"/>
+            <!--<cache:cache-put cache="roleCache" method="save"/>-->
+            <cache:cache-evict method="remove"/>
+        </cache:caching>
+    </cache:advice>
+
+    <aop:config>
+        <aop:advisor advice-ref="cacheAdvisor" pointcut="execution(* com.leon.learncache.dao.RoleDao.*(..))"/>
+    </aop:config>
 
 
-    <!--&lt;!&ndash;支持json,用于处理json格式转换&ndash;&gt;-->
-    <!--<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
-    <!--<property name="supportedMediaTypes">-->
-    <!--<list>-->
-    <!--<value>application/json;charset=UTF-8</value>-->
-    <!--</list>-->
-    <!--</property>-->
-    <!--</bean>-->
+    <bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager"/>
 
-    <mvc:annotation-driven/>
-
+    <bean id="roleDao" class="com.leon.learncache.dao.impl.RoleDaoImpl"/>
 
 </beans>

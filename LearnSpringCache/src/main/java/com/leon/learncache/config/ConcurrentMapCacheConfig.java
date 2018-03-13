@@ -1,5 +1,7 @@
 package com.leon.learncache.config;
 
+import com.leon.learncache.dao.RoleDao;
+import com.leon.learncache.dao.impl.RoleDaoImpl;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
@@ -12,11 +14,16 @@ import org.springframework.context.annotation.Configuration;
  * @author Xiaolei-Peng
  */
 
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class ConcurrentMapCacheConfig {
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager();
+    }
+
+    @Bean
+    public RoleDao roleDao() {
+        return new RoleDaoImpl();
     }
 }

@@ -1,5 +1,7 @@
 package com.leon.learncache.config;
 
+import com.leon.learncache.dao.RoleDao;
+import com.leon.learncache.dao.impl.RoleDaoImpl;
 import net.sf.ehcache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -16,7 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 @EnableCaching
-public class CacheConfig {
+public class EhCacheConfig {
 
     @Bean
     public EhCacheCacheManager cacheCacheManager(CacheManager cm) {
@@ -29,6 +31,10 @@ public class CacheConfig {
         ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("cache/ehcache.xml"));
         return ehCacheManagerFactoryBean;
     }
-    
+
+    @Bean
+    public RoleDao roleDao() {
+        return new RoleDaoImpl();
+    }
 
 }

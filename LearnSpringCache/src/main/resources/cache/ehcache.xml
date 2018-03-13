@@ -13,7 +13,7 @@
             diskPersistent="false"
             diskExpiryThreadIntervalSeconds="120"/>
 
-    <cache name="cacheTest"
+    <cache name="roleCache"
            maxElementsInMemory="1000"
            eternal="false"
            overflowToDisk="true"
