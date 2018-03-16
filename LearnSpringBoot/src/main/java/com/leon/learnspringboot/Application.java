@@ -29,6 +29,7 @@ import org.springframework.context.annotation.ComponentScan;
  * 2.启动方式2
  * 同样要使用@MapperScan
  */
+
 @SpringBootApplication
 @MapperScan("com.leon.learnspringboot.mapper")
 public class Application {

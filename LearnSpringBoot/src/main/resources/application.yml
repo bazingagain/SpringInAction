@@ -34,3 +34,17 @@ pagehelper:
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql
+
+#spring-boot-actuator监控
+management:
+  endpoint:
+    info:
+      enabled: true
+    beans:
+      enabled: true
+    conditions:
+      enabled: true
+  endpoints:  #值得注意的是两个endpoint并不能合并,合并之后就不能访问/actuator/beans了
+    web:
+      exposure:
+        include: ["info", "beans", "conditions"]

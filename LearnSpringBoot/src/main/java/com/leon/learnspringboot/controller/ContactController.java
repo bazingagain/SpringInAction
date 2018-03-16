@@ -41,8 +41,6 @@ public class ContactController {
     }
 
 
-//    @RequestMapping(method = RequestMethod.POST)
-
     @RequestMapping(value = "/add", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public int add(Contact contact) {
