@@ -6,4 +6,4 @@
 - Spring集成缓存
 
 - SpringBoot的使用
-- SpringBoot集成JavaMail
+- SpringBoot集成JavaMail (Freemarker / Thymeleaf 模板)
