@@ -7,6 +7,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,6 +16,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.thymeleaf.Thymeleaf;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -36,6 +40,9 @@ public class MailSendServiceImpl implements MailSenderService{
 
     @Autowired
     private FreeMarkerConfigurer configurer;  //自动注入
+
+    @Autowired
+    private SpringTemplateEngine thymeleaf;
 
     @Value("${spring.mail.username}")
     private String from;
@@ -112,6 +119,8 @@ public class MailSendServiceImpl implements MailSenderService{
             model.put("userName", "leon");
             model.put("content", mailContent.getContent());
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+
             helper.setText(html, true);
             mailSender.send(message);
         } catch (MessagingException e) {
@@ -123,6 +132,26 @@ public class MailSendServiceImpl implements MailSenderService{
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void sendThemleafHtmlMail(String to, MailContent mailContent) {
+        try {
+            Context ctx = new Context();
+            Map<String, Object> model = new HashMap<>();
+            model.put("userName", "leon");
+            model.put("content", mailContent.getContent());
+            ctx.setVariables(model);
+            String html = thymeleaf.process("thymeleafmail.html", ctx);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(from);
+            helper.setSubject("New Mail Use Thymeleaf From " + from);
+            helper.setTo(to);
+            helper.setText(html, true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }

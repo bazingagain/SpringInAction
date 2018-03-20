@@ -13,4 +13,5 @@ public interface MailSenderService {
     void sendRichMail(String to, MailContent mailContent);
 
     void sendFreemarkerHtmlMail(String to, MailContent mailContent);
+    void sendThemleafHtmlMail(String to, MailContent mailContent);
 }

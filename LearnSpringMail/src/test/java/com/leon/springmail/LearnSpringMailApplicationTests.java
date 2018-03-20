@@ -24,7 +24,8 @@ public class LearnSpringMailApplicationTests {
 		String content = "test 文本";
 //		mailSenderService.sendSimpleEmail(to, new MailContent(content));
 //		mailSenderService.sendRichMail(to, new MailContent(content));
-		mailSenderService.sendFreemarkerHtmlMail(to, new MailContent(content));
+//		mailSenderService.sendFreemarkerHtmlMail(to, new MailContent(content));
+		mailSenderService.sendThemleafHtmlMail(to, new MailContent(content));
 	}
 
 }
