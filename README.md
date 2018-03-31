@@ -7,3 +7,5 @@
 
 - SpringBoot的使用
 - SpringBoot集成JavaMail (Freemarker / Thymeleaf 模板)
+
+- SpringBoot集成SpringSecurity

@@ -1,13 +1,15 @@
 package com.leon.learnspringsecurity.service.impl;
 
 import com.leon.learnspringsecurity.entity.Spitter;
-import com.leon.learnspringsecurity.mapper.SpitterRepository;
+import com.leon.learnspringsecurity.dao.SpitterMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +19,16 @@ import java.util.List;
  *
  * @author Xiaolei-Peng
  */
+
+@Service
 public class SpitterUserServiceImpl implements UserDetailsService {
 
-    private final SpitterRepository spitterRepository;
-
-    public SpitterUserServiceImpl(SpitterRepository spitterRepository) {
-        this.spitterRepository = spitterRepository;
-    }
+    @Autowired
+    private SpitterMapper SpitterMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Spitter spitter = spitterRepository.findByUsername(username);
+        Spitter spitter = SpitterMapper.findByUsername(username);
         if (spitter != null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_SPITTER"));
@@ -35,6 +36,5 @@ public class SpitterUserServiceImpl implements UserDetailsService {
         }
         throw new UsernameNotFoundException("User '" + username + "' not found.");
     }
-
 
 }
