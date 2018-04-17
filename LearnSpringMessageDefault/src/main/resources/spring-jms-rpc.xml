@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <bean id="connectionFactory"
+          class="org.apache.activemq.spring.ActiveMQConnectionFactory"
+          p:brokerURL="tcp://localhost:61616"/>
+
+    <!--配置以下3个bean,等待名为 spitter.alert.queue 的RPC消息的到达, 相当于服务提供者-->
+
+    <bean id="alertService"
+          class="com.leon.learnspringmessage.service.impl.JmsRpcServiceImpl"/>
+
+    <bean id="alertServiceExporter"
+          class="org.springframework.jms.remoting.JmsInvokerServiceExporter"
+          p:service-ref="alertService"
+          p:serviceInterface="com.leon.learnspringmessage.service.JmsRpcService"/>
+
+    <jms:listener-container connection-factory="connectionFactory">
+        <jms:listener destination="spitter.alert.queue" ref="alertServiceExporter"/>
+    </jms:listener-container>
+
+    <!--服务消费者, 相当于消费者的一方只有包含JmsRpcService的接口的jar包, 实现由服务提供者实现-->
+    <bean id="alertService"
+          class="org.springframework.jms.remoting.JmsInvokerProxyFactoryBean"
+          p:connectionFactory-ref="connectionFactory"
+          p:queueName="spitter.alert.queue"
+          p:serviceInterface="com.leon.learnspringmessage.service.JmsRpcService"/>
+
+
+</beans>

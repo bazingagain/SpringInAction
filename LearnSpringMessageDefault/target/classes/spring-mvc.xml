@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c" xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jms
+       http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <bean id="connectionFactory"
+          class="org.apache.activemq.spring.ActiveMQConnectionFactory"
+          p:brokerURL="tcp://localhost:61616"/>
+
+
+    <bean id="queue"
+          class="org.apache.activemq.command.ActiveMQQueue"
+          c:_0="spittle.alert.queue"/>
+
+    <bean id="topic"
+          class="org.apache.activemq.command.ActiveMQTopic"
+          c:_0="spitter.alert.topic"/>
+
+    <bean id="messageConverter"
+          class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+
+    <bean id="jmsTemplate"
+          class="org.springframework.jms.core.JmsTemplate"
+          c:_0-ref="connectionFactory"
+          p:defaultDestinationName="spittle.alert.queue"
+          p:messageConverter-ref="messageConverter"/>
+
+    <bean id="alertService"
+          class="com.leon.learnspringmessage.service.impl.AlertServiceImpl"
+          c:_0-ref="jmsTemplate"/>
+
+    <bean id="receiveService"
+          class="com.leon.learnspringmessage.service.impl.ReceiveServiceImpl"
+          c:_0-ref="jmsTemplate"/>
+
+    <bean id="spittleHandler"
+          class="com.leon.learnspringmessage.handler.SpittleAlertHandler"/>
+
+    <bean id="alertMessageListerner"
+          class="com.leon.learnspringmessage.handler.AlertMessageListener"/>
+
+    <!--异步监听消息方式-->
+    <jms:listener-container connection-factory="connectionFactory">
+        <!--<jms:listener destination="spittle.alert.queue" ref="spittleHandler" method="handleSpittleAlert"/>-->
+        <jms:listener destination="spittle.alert.queue" ref="alertMessageListerner"/>
+    </jms:listener-container>
+
+</beans>
