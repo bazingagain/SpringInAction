@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-jms-rpc.xml")
+@ContextConfiguration("classpath:jms-rpc/service-consumer.xml")
 public class SpringJmsRpcTest {
 
     @Autowired

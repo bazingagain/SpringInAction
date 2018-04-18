@@ -1,4 +1,4 @@
-package com.leon.learnspringmessage.service.impl;
+package com.leon.learnspringmessage.service.impl.jms.rpc;
 
 import com.leon.learnspringmessage.service.JmsRpcService;
 import org.springframework.stereotype.Component;

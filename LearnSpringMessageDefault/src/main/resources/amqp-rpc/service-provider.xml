@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+
+    <!--声明发送者Bean-->
+    <bean id="sender"
+          class="com.leon.learnspringmessage.service.impl.amqp.RabbitMQSendServiceImpl"/>
+
+    <!--声明接受这Bean （同步,异步）-->
+    <bean id="syncReceiver"
+          class="com.leon.learnspringmessage.service.impl.amqp.message.syncreceive.RabbitMQReceiveServiceImpl"/>
+    <bean id="asyncReceiver"
+          class="com.leon.learnspringmessage.service.impl.amqp.message.asyncreceive.RabbitMQReceiveHandler"/>
+
+
+    <!--使用 RabbitMQ进行配置, 默认监听5672-->
+    <!--连接 RabbitMQ 服务器-->
+    <rabbit:connection-factory id="connectionFactory"
+                               host="localhost"
+                               port="5672"
+                               username="guest"
+                               password="guest"/>
+
+    <!--使用rabbitTemplate发送或者接收(同步方式)消息-->
+    <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory"/>
+    <!--<rabbit:template id="rabbitTemplate" connection-factory="connectionFactory" -->
+                     <!--exchange="spittle.alert.exchange" -->
+                     <!--routing-key="spittle.alerts" -->
+                     <!--queue="spittle.alerts.queue.1"/>-->
+
+    <!--rabbit管理组件,自动创建所声明的队列,exchange,binding-->
+    <rabbit:admin connection-factory="connectionFactory"/>
+
+    <rabbit:queue id="spittleAlertQueue" name="spittle.alerts"/>
+
+    <rabbit:queue id="spittleAlertQueue1" name="spittle.alerts.queue.1"/>
+    <rabbit:queue id="spittleAlertQueue2" name="spittle.alerts.queue.2"/>
+    <rabbit:fanout-exchange name="spittle.alert.exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="spittle.alerts.queue.1"></rabbit:binding>
+            <rabbit:binding queue="spittle.alerts.queue.2"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener queue-names="spittle.alerts.queue.1" ref="asyncReceiver" method="handleMessage"/>
+    </rabbit:listener-container>
+
+</beans>

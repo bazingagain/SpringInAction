@@ -31,18 +31,18 @@
           p:messageConverter-ref="messageConverter"/>
 
     <bean id="alertService"
-          class="com.leon.learnspringmessage.service.impl.AlertServiceImpl"
+          class="com.leon.learnspringmessage.service.impl.jms.message.JmsMessageSendServiceImpl"
           c:_0-ref="jmsTemplate"/>
 
     <bean id="receiveService"
-          class="com.leon.learnspringmessage.service.impl.ReceiveServiceImpl"
+          class="com.leon.learnspringmessage.service.impl.jms.message.syncreceive.JmsMessageReceiveServiceImpl"
           c:_0-ref="jmsTemplate"/>
 
     <bean id="spittleHandler"
-          class="com.leon.learnspringmessage.handler.SpittleAlertHandler"/>
+          class="com.leon.learnspringmessage.service.impl.jms.message.asyncreceive.SpittleAlertHandler"/>
 
     <bean id="alertMessageListerner"
-          class="com.leon.learnspringmessage.handler.AlertMessageListener"/>
+          class="com.leon.learnspringmessage.service.impl.jms.message.asyncreceive.AlertMessageListener"/>
 
     <!--异步监听消息方式-->
     <jms:listener-container connection-factory="connectionFactory">

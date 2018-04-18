@@ -3,7 +3,7 @@ package com.leon;
 import static org.junit.Assert.assertTrue;
 
 import com.leon.learnspringmessage.Model.Spitter;
-import com.leon.learnspringmessage.service.AlertService;
+import com.leon.learnspringmessage.service.JmsMessageSendService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +16,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-message.xml")
+@ContextConfiguration("classpath:jms-message/spring-message.xml")
 public class SpringMessageTest
 {
     @Autowired
-    private AlertService alertService;
+    private JmsMessageSendService jmsMessageSendService;
 
 //    @Autowired
-//    private ReceiveService receiveService;
+//    private JmsMessageReceiveService receiveService;
 
     @Test
     public void test() {
-        alertService.sendSpitterAlert(new Spitter());
+        jmsMessageSendService.sendSpitterAlert(new Spitter());
     }
 }

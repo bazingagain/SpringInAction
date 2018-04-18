@@ -7,6 +7,6 @@ import com.leon.learnspringmessage.Model.Spitter;
  *
  * @author Xiaolei-Peng
  */
-public interface ReceiveService {
+public interface JmsMessageReceiveService {
     Spitter receiveSpittleAlert();
 }

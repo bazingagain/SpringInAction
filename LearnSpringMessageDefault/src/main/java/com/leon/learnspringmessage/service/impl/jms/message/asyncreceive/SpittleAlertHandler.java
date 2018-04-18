@@ -1,4 +1,4 @@
-package com.leon.learnspringmessage.handler;
+package com.leon.learnspringmessage.service.impl.jms.message.asyncreceive;
 
 import com.leon.learnspringmessage.Model.Spitter;
 

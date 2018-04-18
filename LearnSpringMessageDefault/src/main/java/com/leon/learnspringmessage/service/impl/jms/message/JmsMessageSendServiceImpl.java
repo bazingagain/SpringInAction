@@ -1,7 +1,7 @@
-package com.leon.learnspringmessage.service.impl;
+package com.leon.learnspringmessage.service.impl.jms.message;
 
 import com.leon.learnspringmessage.Model.Spitter;
-import com.leon.learnspringmessage.service.AlertService;
+import com.leon.learnspringmessage.service.JmsMessageSendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -16,12 +16,12 @@ import javax.jms.Session;
  * @author Xiaolei-Peng
  */
 
-public class AlertServiceImpl implements AlertService {
+public class JmsMessageSendServiceImpl implements JmsMessageSendService {
 
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    public AlertServiceImpl(JmsTemplate jmsTemplate) {
+    public JmsMessageSendServiceImpl(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 

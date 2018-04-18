@@ -1,7 +1,7 @@
-package com.leon.learnspringmessage.service.impl;
+package com.leon.learnspringmessage.service.impl.jms.message.syncreceive;
 
 import com.leon.learnspringmessage.Model.Spitter;
-import com.leon.learnspringmessage.service.ReceiveService;
+import com.leon.learnspringmessage.service.JmsMessageReceiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.JmsUtils;
@@ -14,12 +14,12 @@ import javax.jms.ObjectMessage;
  *
  * @author Xiaolei-Peng
  */
-public class ReceiveServiceImpl implements ReceiveService {
+public class JmsMessageReceiveServiceImpl implements JmsMessageReceiveService {
 
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    public ReceiveServiceImpl(JmsTemplate jmsTemplate) {
+    public JmsMessageReceiveServiceImpl(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 
