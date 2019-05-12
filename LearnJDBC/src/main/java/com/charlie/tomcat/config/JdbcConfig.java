@@ -33,10 +33,10 @@ public class JdbcConfig {
         return dataSource;
     }
 
-//    @Bean
-//    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-//        return new JdbcTemplate(dataSource);
-//    }
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
 
     @Bean
     NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {

@@ -3,8 +3,6 @@ package com.charlie.tomcat.dao.impl;
 import com.charlie.tomcat.dao.RoleRepository;
 import com.charlie.tomcat.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
